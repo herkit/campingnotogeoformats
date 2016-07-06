@@ -15,7 +15,7 @@ var campingapi = {
           callback(err);
         else
         {
-          var json = GeoJSON.parse(body.Pins, {Point: ['Lon', 'Lat']});
+          var json = GeoJSON.parse(body.Pins, {Point: ['Lat', 'Lon']});
           callback(null, json);
         }
       }
