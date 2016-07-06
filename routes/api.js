@@ -1,16 +1,28 @@
 var ci = require(__base + 'campingapi');
 var express = require('express');
 var router = express.Router();
+var tokml = require('tokml');
 
-/* GET home page. */
-router.get('/gpx', function(req, res, next) {
+router.get('/geojson', function(req, res, next) {
   console.log(req.query.categoryIds);
-  ci.getpins(req.query.categoryIds, function(err, pinres, body) {
+  ci.getpins(req.query.categoryIds, function(err, geo) {
     if (err) {
       console.log(err);
       next();
     } else {
-      res.json(body.Pins);
+      res.json(geo);
+    }
+  });
+});
+
+router.get('/kml', function(req, res, next) {
+  console.log(req.query.categoryIds);
+  ci.getpins(req.query.categoryIds, function(err, geo) {
+    if (err) {
+      console.log(err);
+      next();
+    } else {
+      res.send(tokml(geo));
     }
   });
 });
