@@ -22,7 +22,7 @@ var categoryIdsToHeading = function(categoryIds) {
   var title = categoryNames.pop() + " i Norge";
   if (categoryNames.length > 0)
     title = categoryNames.join(", ") + " og " + title;
-  
+
   return capitalize(title);
 }
 
@@ -48,10 +48,10 @@ router.get('/kml', function(req, res, next) {
     } else {
       res.type("xml");
       res.send(tokml(geo, {
+        name: 'name',
+        description: 'description',
         documentName: categoryIdsToHeading(categoryIds),
-        documentDescription: "En liste fra Camping.no over tilgjengelige campingmuligheter i Norge",
-        name: 'Name',
-        description: 'ShortDescription'
+        documentDescription: "En liste fra Camping.no over tilgjengelige campingmuligheter i Norge"
       }));
     }
   });
