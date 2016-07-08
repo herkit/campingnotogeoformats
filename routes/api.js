@@ -22,7 +22,11 @@ router.get('/kml', function(req, res, next) {
       console.log(err);
       next();
     } else {
-      res.send(tokml(geo));
+      res.type("xml");
+      res.send(tokml(geo, {
+        name: 'Name',
+        description: 'ShortDescription'
+      }));
     }
   });
 });
