@@ -30,9 +30,5 @@ then
     ln -s /vagrant/www /var/www
 
     # Victory!
-    echo "You're all done! Your default node server should now be listening on http://10.0.33.34/. For code, see: node-mongo-vagrant/www/default/server.js."
-
-    cd /vagrant
-    npm install
-    npm start
+    npm install -g nodemon
 fi
