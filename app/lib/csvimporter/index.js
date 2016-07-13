@@ -26,38 +26,24 @@ Alberta Beach
 var csvimport = function(file, options, callback) {
   var parse = csv.parse();
   var stream = fs.createReadStream(file);
-  stream
-    .pipe(csv.parse({
-      "delimiter": ",",
-      "columns": [
-        "lon", 
-        "lat", 
-        "gps_composite_field",
-        "campground_code",
-        "campground_name",
-        "type",
-        "phone",
-        "dates_open",
-        "comments",
-        "number_of_campsites",
-        "elevation",
-        "amenities",
-        "state",
-        "distance",
-        "heading",
-        "nearest_city"
-      ],
-      "auto-parse": true
-    }))
+  var csvoptions = options.csv || {};
+  var geoJSONoptions = options.geoJSON || {};
+
+  return stream
+    .pipe(csv.parse(csvoptions || {}))
     .pipe(
       csv.transform(
         function(record){
-          return GeoJSON.parse(record, { Point: ['lat', 'lon'] });
+          try {
+            return GeoJSON.parse([record], Object.assign({}, geoJSONoptions)).features[0];
+          } catch (err) {
+            console.log("Error: ", err);
+            console.log(geoJSONoptions);
+            return;
+          }
         }
       )
-    )
-    .pipe(csv.stringify())
-    .pipe(process.stdout);
+    );
 }
 
-module.exports = csvimport;
+module.exports.importStream = csvimport;

@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 global.__base = __dirname + '/';
+global.__datadir = global.__base + 'data/';
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
