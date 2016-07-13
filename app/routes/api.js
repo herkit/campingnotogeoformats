@@ -19,7 +19,7 @@ var categoryIdsToHeading = function(categoryIds) {
         return categories[c] || c; 
       });
 
-  var title = categoryNames.pop() + " i Norge";
+  var title = categoryNames.pop() + " i Norges land";
   if (categoryNames.length > 0)
     title = categoryNames.join(", ") + " og " + title;
 
