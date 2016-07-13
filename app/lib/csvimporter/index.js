@@ -23,9 +23,8 @@ Alberta Beach
 
 */
 
-var csvimport = function(file, options, callback) {
+var csvimport = function(stream, options, callback) {
   var parse = csv.parse();
-  var stream = fs.createReadStream(file);
   var csvoptions = options.csv || {};
   var geoJSONoptions = options.geoJSON || {};
 
@@ -35,7 +34,7 @@ var csvimport = function(file, options, callback) {
       csv.transform(
         function(record){
           try {
-            return GeoJSON.parse([record], Object.assign({}, geoJSONoptions)).features[0];
+            return GeoJSON.parse([record], JSON.parse(JSON.stringify(geoJSONoptions))).features[0];
           } catch (err) {
             console.log("Error: ", err);
             console.log(geoJSONoptions);
