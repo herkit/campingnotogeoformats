@@ -1,3 +1,0 @@
-[submodule "app/node_modules/GeoJSON.js"]
-	path = app/node_modules/GeoJSON.js
-	url = git@github.com:herkit/GeoJSON.js.git
