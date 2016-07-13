@@ -1,36 +1,37 @@
 #!/usr/bin/env node
+var fs = require('fs');
 var importer = require('../lib/csvimporter');
 var GeoJSONStream = require('geojson-stream');
+var stream = fs.createReadStream('../data/poi/usa/usacampgrounds.info/MidwestCamp.csv');
+var options = {
+  csv: {
+    "delimiter": ",",
+    "columns": [
+      "lon", 
+      "lat", 
+      "gps_composite_field",
+      "campground_code",
+      "campground_name",
+      "type",
+      "phone",
+      "dates_open",
+      "comments",
+      "number_of_campsites",
+      "elevation",
+      "amenities",
+      "state",
+      "distance",
+      "heading",
+      "nearest_city"
+    ],
+    "auto-parse": true
+  },
+  geoJSON: {
+    Point: ['lat', 'lon'] 
+  }
+};
 
-importer.importStream
-  (
-    '../data/poi/usa/usacampgrounds.info/MidwestCamp.csv', 
-    {
-    csv: {
-      "delimiter": ",",
-      "columns": [
-        "lon", 
-        "lat", 
-        "gps_composite_field",
-        "campground_code",
-        "campground_name",
-        "type",
-        "phone",
-        "dates_open",
-        "comments",
-        "number_of_campsites",
-        "elevation",
-        "amenities",
-        "state",
-        "distance",
-        "heading",
-        "nearest_city"
-      ],
-      "auto-parse": true
-    },
-    geoJSON: {
-      Point: ['lat', 'lon'] 
-    }
-  })
+importer
+  .importStream(stream, options)
   .pipe(GeoJSONStream.stringify())
   .pipe(process.stdout);
