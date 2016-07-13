@@ -34,7 +34,7 @@ var csvimport = function(stream, options, callback) {
       csv.transform(
         function(record){
           try {
-            return GeoJSON.parse([record], JSON.parse(JSON.stringify(geoJSONoptions))).features[0];
+            return GeoJSON.parse(record, Object.assign({}, geoJSONoptions));
           } catch (err) {
             console.log("Error: ", err);
             console.log(geoJSONoptions);

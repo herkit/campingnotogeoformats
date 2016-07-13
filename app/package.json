@@ -9,15 +9,15 @@
     "body-parser": "~1.15.1",
     "capitalize": "^1.0.0",
     "cookie-parser": "~1.4.3",
+    "csv": "^1.1.0",
     "debug": "~2.2.0",
     "express": "~4.13.4",
-    "geojson": "^0.3.0",
+    "geojson": "herkit/GeoJSON.js",
+    "geojson-stream": "0.0.1",
     "jade": "~1.11.0",
     "morgan": "~1.7.0",
     "request-json": "^0.5.6",
     "serve-favicon": "~2.3.0",
-    "tokml": "^0.4.0",
-    "geojson-stream": "0.0.1",
-    "csv": "^1.1.0"
+    "tokml": "^0.4.0"
   }
 }
