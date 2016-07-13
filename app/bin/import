@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+var importer = require('../lib/csvimporter');
+
+importer('../data/poi/usa/usacampgrounds.info/MidwestCamp.csv');
