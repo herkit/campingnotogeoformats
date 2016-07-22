@@ -1,5 +1,5 @@
+var through = require('through2');
 var request = require('request');
-var client = request.createClient('http://book.camping.no/no/produktetmap/');
 var GeoJSON = require('geojson');
 var JSONStream = require('JSONStream');
 
@@ -41,8 +41,8 @@ var addDetailUrl = function(pin, index) {
 
 var campingapi = {
   retrieve: function(options, callback) {
-    client
-      .get('getpins', 
+    request
+      .get('http://book.camping.no/no/produktetmap/getpins', 
         { qs: 
           { 
             categoryIds: options.categoryIds 
@@ -50,19 +50,13 @@ var campingapi = {
         }
       )
       .pipe(JSONStream.parse())
-      .pipe()
-      function(err, res, body) {
-        if (err)
-          callback(err);
-        else
-        {
-          var json = GeoJSON.parse(
-            body.Pins.map(addDetailUrl), 
+      .pipe(through.obj(function(pin, enc, done) {
+        var feature = GeoJSON.parse(
+            addDetailUrl(pin)), 
             {Point: ['lat', 'lon']});
-
-          callback(null, json);
-        }
-      }
+        this.push(feature);
+        done();
+      }));
     )
   }
 }

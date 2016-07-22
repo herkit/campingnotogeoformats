@@ -1,9 +1,9 @@
+var through = require('through2');
 var request = require('request');
-var client = request.createClient('http://www.camping.se/templates/camping/ajax');
 var GeoJSON = require('geojson');
 var JSONStream = require('JSONStream');
 
-var addDetailUrl = function(pin, index) {
+var addDetailUrl = function(pin) {
   return { 
     "id": pin.Id,
     "lat": pin.Latitude,
@@ -18,29 +18,22 @@ var addDetailUrl = function(pin, index) {
 
 var campingapi = {
   retrieve: function(options, callback) {
-    client
-      .get('businesses.ashx', 
+    return request
+      .get('http://www.camping.se/templates/camping/ajax/businesses.ashx', 
         { qs: 
           { 
             pagesize: options.pageSize || 1000
           } 
         }
       )
-      .pipe(JSONStream.parse())
-      .pipe()
-      function(err, res, body) {
-        if (err)
-          callback(err);
-        else
-        {
-          var json = GeoJSON.parse(
-            body.Pins.map(addDetailUrl), 
-            {Point: ['lat', 'lon']});
-
-          callback(null, json);
-        }
-      }
-    )
+      .pipe(JSONStream.parse("Records.*"))
+      .pipe(through.obj(function(pin, enc, done) {
+        console.log(pin);
+        var feature = GeoJSON.parse(
+            addDetailUrl(pin), { Point: ['lat', 'lon']} );
+        this.push(feature);
+        done();
+      }));
   }
 }
 
