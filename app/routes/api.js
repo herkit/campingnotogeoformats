@@ -1,4 +1,4 @@
-var ci = require(__base + 'campingapi');
+var ci = require(__base + 'providers/campingapi');
 var express = require('express');
 var router = express.Router();
 var tokml = require('tokml');
@@ -38,10 +38,10 @@ router.get('/geojson', function(req, res, next) {
   });
 });
 
-router.get('/kml', function(req, res, next) {
-  var categoryIds = req.query.categoryIds;
-  console.log(categoryIds);
-  ci.getpins(categoryIds, function(err, geo) {
+router.get('/:provider/kml', function(req, res, next) {
+  console.log(req.query);
+  var ci = require(__base + "lib/providers/" + req.params.provider;
+  ci.retrieve(req.query, function(err, geo) {
     if (err) {
       console.log(err);
       next();

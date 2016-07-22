@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var fs = require('fs');
-var importer = require('../lib/csvimporter');
+var provider = require('../lib/providers/csv');
 var GeoJSONStream = require('geojson-stream');
 var stream = fs.createReadStream('../data/poi/usa/usacampgrounds.info/MidwestCamp.csv');
 var options = {
@@ -31,7 +31,7 @@ var options = {
   }
 };
 
-importer
-  .importStream(stream, options)
+provider
+  .retrieve(stream, options)
   .pipe(GeoJSONStream.stringify())
   .pipe(process.stdout);
