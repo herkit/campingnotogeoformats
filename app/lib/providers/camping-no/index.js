@@ -5,7 +5,7 @@ var JSONStream = require('JSONStream');
 
 var capitalize = require('capitalize');
 
-var categories = {
+/*var categories = {
   "30520": "camping",
   "30358": "campinghytter",
   "30359": "leiligheter",
@@ -25,7 +25,7 @@ var categoryIdsToHeading = function(categoryIds) {
     title = categoryNames.join(", ") + " og " + title;
 
   return capitalize(title);
-}
+};*/
 
 var addDetailUrl = function(pin, index) {
   return { 
@@ -41,7 +41,7 @@ var addDetailUrl = function(pin, index) {
 
 var campingapi = {
   retrieve: function(options, callback) {
-    request
+    return request
       .get('http://book.camping.no/no/produktetmap/getpins', 
         { qs: 
           { 
@@ -49,15 +49,14 @@ var campingapi = {
           } 
         }
       )
-      .pipe(JSONStream.parse())
+      .pipe(JSONStream.parse("Pins.*"))
       .pipe(through.obj(function(pin, enc, done) {
         var feature = GeoJSON.parse(
-            addDetailUrl(pin)), 
-            {Point: ['lat', 'lon']});
+            addDetailUrl(pin), 
+            { Point: ['lat', 'lon'] });
         this.push(feature);
         done();
       }));
-    )
   }
 }
 

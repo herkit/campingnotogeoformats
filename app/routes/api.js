@@ -13,22 +13,13 @@ router.get('/:provider/geojson', function(req, res, next) {
     .pipe(res);
 });
 
-/*router.get('/:provider/kml', function(req, res, next) {
+router.get('/:provider/kml', function(req, res, next) {
+  var kmlstream = require(__base + "lib/formats/kml");
+  
   var ci = require(__base + "lib/providers/" + req.params.provider);
-  ci.retrieve(req.query).
-    if (err) {
-      console.log(err);
-      next();
-    } else {
-      res.type("xml");
-      res.send(tokml(geo, {
-        name: 'name',
-        description: 'description',
-        documentName: categoryIdsToHeading(categoryIds),
-        documentDescription: "En liste fra Camping.no over tilgjengelige campingmuligheter i Norge"
-      }));
-    }
-  });
-});*/
+  ci.retrieve(req.query)
+    .pipe(kmlstream({ name: 'name', description: 'description', }))
+    .pipe(res);
+});
 
 module.exports = router;

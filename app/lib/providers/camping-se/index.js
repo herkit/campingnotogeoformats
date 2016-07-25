@@ -28,9 +28,7 @@ var campingapi = {
       )
       .pipe(JSONStream.parse("Records.*"))
       .pipe(through.obj(function(pin, enc, done) {
-        console.log(pin);
-        var feature = GeoJSON.parse(
-            addDetailUrl(pin), { Point: ['lat', 'lon']} );
+        var feature = GeoJSON.parse(addDetailUrl(pin), { Point: ['lat', 'lon']} );
         this.push(feature);
         done();
       }));
